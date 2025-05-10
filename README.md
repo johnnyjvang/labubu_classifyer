@@ -4,8 +4,6 @@ Hosted on Render: https://labubu-classifyer.onrender.com/
 
 This is a simple image classification web app that uses a trained PyTorch model (ResNet18) to identify whether an uploaded image is **Labubu** or **Not Labubu**. The app is built using **Flask** and deployed using **Render**.
 
-![Labubu Sample](static/sample_labubu.jpg)
-
 ---
 
 ## 🚀 How It Works
@@ -19,6 +17,26 @@ This is a simple image classification web app that uses a trained PyTorch model 
 
 ---
 
+## 🧠 Training Details
+
+The model was trained on a custom dataset using PyTorch:
+
+- **Labubu images**:  
+  - 500 real images  
+  - 2,500 augmented images  
+  - **Total**: 3,000
+
+- **Not Labubu images**:  
+  - 1,500 real images  
+  - 3,000 augmented images  
+  - **Total**: 4,500
+
+Images were gathered using a Google Images scraper. Data augmentation was applied to improve generalization and reduce overfitting.
+
+The model architecture is based on **ResNet18**, with a modified final layer for binary classification.
+
+---
+
 ## 🧰 Technologies Used
 
 - Python 3.10+
@@ -28,3 +46,4 @@ This is a simple image classification web app that uses a trained PyTorch model 
 - torchvision
 - Render (for deployment)
 
+---
