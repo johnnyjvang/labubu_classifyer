@@ -1,133 +1,117 @@
 # Labubu Classifier
 
-A lightweight web-based image classification application that determines whether an uploaded image contains a Labubu character. The system leverages a fine-tuned ResNet18 convolutional neural network implemented in PyTorch and is deployed using Flask on Render.
+A web-based image classification application that determines whether an uploaded image contains an authentic **Labubu** character or not. The system uses a fine-tuned ResNet18 model in PyTorch and is deployed using Flask on Render.
 
-**Live Application:** https://labubu-classifyer.onrender.com/
+**Live Application:** [Labubu Classifier](https://labubu-classifyer.onrender.com/)
 
 ---
 
 ## Overview
 
-This application provides a simple interface for users to upload an image and receive a classification result in real time. The backend processes the image using a trained deep learning model and returns both a predicted label and a confidence score.
+This project applies computer vision to distinguish authentic Labubu figures from visually similar counterfeit variants (“Lafufu”). It demonstrates a complete ML pipeline from data collection to deployment.
+
+---
+
+## Motivation
+
+Counterfeit collectibles are increasingly difficult to distinguish visually. This project explores how lightweight deep learning models can assist in **real vs. fake classification** using image-based features.
+
+---
+
+## Demo
+
+### Web Interface
+<p align="center">
+  <img src="static/labubu_homepage.png" width="600">
+</p>
+
+### Correct Predictions
+<p align="center">
+  <img src="static/labubu_correct_identifyer.png" width="400">
+  <img src="static/not_labubu_correct_identifyer.png" width="400">
+</p>
+
+### Example Inputs
+<p align="center">
+  <img src="static/fake_labubu.png" width="250">
+  <img src="static/labubu_rare.png" width="250">
+</p>
 
 ---
 
 ## Features
 
-- Upload and classify images through a web interface
-- Binary classification: **Labubu** vs **Not Labubu**
-- Confidence score output for model predictions
-- Automatic handling and cleanup of uploaded images
-- Lightweight deployment using Flask and Render
+- Image upload + real-time inference  
+- Binary classification (Labubu vs Not Labubu)  
+- Confidence scoring  
+- Lightweight web deployment  
 
 ---
 
-## Model Details
+## Model
 
-The classification model is based on a modified ResNet18 architecture:
+- Architecture: ResNet18 (modified FC layer)  
+- Input: 224×224 RGB images  
+- Output: 2-class softmax  
 
-- Pretrained backbone replaced with custom-trained weights
-- Final fully connected layer adapted for binary classification
-- Softmax applied to generate class probabilities
+### Dataset
 
-### Dataset Composition
+| Class | Total |
+|------|------|
+| Labubu | 3,000 |
+| Not Labubu | 4,500 |
 
-| Class         | Real Images | Augmented Images | Total |
-|--------------|------------|------------------|-------|
-| Labubu        | 500        | 2,500            | 3,000 |
-| Not Labubu    | 1,500      | 3,000            | 4,500 |
-
-Data was collected using a Google Images scraping approach and augmented to improve model generalization and robustness.
+Includes augmentation for robustness across lighting, pose, and background variation.
 
 ---
 
-## System Architecture
+## Engineering Decisions
 
-1. User uploads an image via the web interface
-2. Image is resized and normalized using torchvision transforms
-3. The processed image is passed into the ResNet18 model
-4. The model outputs class probabilities
-5. The application returns:
-   - Predicted label (Labubu / Not Labubu)
-   - Confidence score (%)
-6. The uploaded image and results are displayed to the user
+- **ResNet18**: lightweight, fast inference, sufficient for binary classification  
+- **Flask**: simple deployment and minimal overhead  
+- **CPU inference**: compatible with low-cost hosting (Render)  
+- **RGB normalization fix**: ensures consistent 3-channel input (prevents runtime errors)
 
 ---
 
-## Technology Stack
+## Performance
 
-- Python 3.10+
-- Flask (web framework)
-- PyTorch (model inference)
-- torchvision (image preprocessing and model architecture)
-- Pillow (image handling)
-- Render (deployment platform)
+- Real-time inference (~tens of ms on CPU)  
+- High accuracy on validation dataset (binary classification task)  
+- Robust to common variations (angle, lighting, background)
 
 ---
 
-## Project Structure
+## Tech Stack
 
-```
-labubu_classifyer/
-├── app.py                  # Main Flask application
-├── labubu_classifier.pth  # Trained model weights
-├── static/                # Uploaded images (temporary storage)
-├── templates/
-│   └── index.html         # Web interface
-├── requirements.txt
-└── README.md
-```
+- Python, Flask  
+- PyTorch, torchvision  
+- Pillow  
+- Render  
 
 ---
 
-## Running Locally
 
-### 1. Clone the Repository
-```
+## Run Locally
+
+```bash
 git clone https://github.com/johnnyjvang/labubu_classifyer.git
-cd labubu_classifyer
-```
-
-### 2. Install Dependencies
-```
+cd labubu_classifier
 pip install -r requirements.txt
-```
-
-### 3. Run the Application
-```
 python app.py
 ```
 
-The application will be available at:
-```
-http://localhost:10000
-```
-
 ---
 
-## Deployment
+## Future Work
 
-The application is deployed using Render. The Flask server is configured to run on port 10000 to comply with Render's hosting requirements.
-
----
-
-## Notes and Limitations
-
-- Model performance is dependent on dataset quality and diversity
-- Misclassifications may occur on low-quality or ambiguous images
-- Uploaded images are temporarily stored and cleared between requests
-
----
-
-## Future Improvements
-
-- Expand dataset for improved accuracy
-- Add multi-class classification support
-- Implement batch image uploads
-- Enhance UI/UX for better user interaction
+- Expand dataset (edge cases + rare variants)  
+- Multi-class classification (specific Labubu types)  
+- UI improvements  
+- Batch inference  
 
 ---
 
 ## License
 
-This project is open source and available under the MIT License.
+MIT License
